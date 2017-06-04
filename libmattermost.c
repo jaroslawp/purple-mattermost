@@ -959,7 +959,6 @@ static void mm_start_socket(MattermostAccount *ma);
 static void mm_socket_write_json(MattermostAccount *ma, JsonObject *data);
 static void mm_get_users_by_ids(MattermostAccount *ma, GList *ids);
 
-
 static void
 mm_add_channels_to_blist(MattermostAccount *ma, JsonNode *node, gpointer user_data)
 {
@@ -1146,9 +1145,9 @@ mm_get_users_by_ids_response(MattermostAccount *ma, JsonNode *node, gpointer use
         if (user != NULL) {
             const gchar *username = json_object_get_string_member(user, "username");
             if (username != NULL) {          
-               buddy = purple_buddy_new(ma->account, username, NULL);
-               purple_blist_add_buddy(buddy, NULL, default_group, NULL);
-               purple_blist_node_set_string(PURPLE_BLIST_NODE(buddy), "user_id", i->data);
+                buddy = purple_buddy_new(ma->account, username, NULL);
+                purple_blist_add_buddy(buddy, NULL, default_group, NULL);
+                purple_blist_node_set_string(PURPLE_BLIST_NODE(buddy), "user_id", i->data);
             }
         }
     }
