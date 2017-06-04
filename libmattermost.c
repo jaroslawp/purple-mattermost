@@ -1000,10 +1000,10 @@ mm_add_channels_to_blist(MattermostAccount *ma, JsonNode *node, gpointer user_da
 						g_hash_table_replace(ma->one_to_ones, g_strdup(id), g_strdup(username));
 						g_hash_table_replace(ma->one_to_ones_rev, g_strdup(username), g_strdup(id));
 					} else {
-                        ids = g_list_append(ids, g_strdup(user_id));
-                    }
-				} 
-				
+						ids = g_list_append(ids, g_strdup(user_id));
+					}
+				}
+
 				g_strfreev(buddy_names);
 				
 				//TODO if buddy is still NULL, look for details by channel_id
@@ -1032,8 +1032,8 @@ mm_add_channels_to_blist(MattermostAccount *ma, JsonNode *node, gpointer user_da
 		}
 	}
 		
-    mm_get_users_by_ids(ma, ids);
-    //g_list_free(ids); in callback !
+	mm_get_users_by_ids(ma, ids);
+	//g_list_free(ids); in callback !
 	g_free(team_id);
 }
 
@@ -1133,51 +1133,48 @@ mm_get_info(PurpleConnection *pc,const gchar *username)
 static void
 mm_get_users_by_ids_response(MattermostAccount *ma, JsonNode *node, gpointer user_data)
 {
-    GList *i;
-    GList *ids = user_data;
-    PurpleBuddy *buddy;
-    JsonObject *response = json_node_get_object(node);
-    PurpleGroup *default_group = mm_get_or_create_default_group();
+	JsonObject *response = json_node_get_object(node);
+	PurpleGroup *default_group = mm_get_or_create_default_group();
+	GList *i;
 
-    for (i=ids;i;i=i->next) {
-        JsonObject *user = json_object_get_object_member(response,i->data);
-        if (user != NULL) {
-            const gchar *username = json_object_get_string_member(user, "username");
-            if (username != NULL) {          
-                buddy = purple_buddy_new(ma->account, username, NULL);
-                purple_blist_add_buddy(buddy, NULL, default_group, NULL);
-                purple_blist_node_set_string(PURPLE_BLIST_NODE(buddy), "user_id", i->data);
-            }
-        }
-    }
+	for (i=user_data;i;i=i->next) {
+		JsonObject *user = json_object_get_object_member(response,i->data);
+		if (user != NULL) {			
+			const gchar *username = json_object_get_string_member(user, "username");
+			if (username != NULL) {          		
+				PurpleBuddy *buddy = purple_buddy_new(ma->account, username, NULL);
+				purple_blist_add_buddy(buddy, NULL, default_group, NULL);
+				purple_blist_node_set_string(PURPLE_BLIST_NODE(buddy), "user_id", i->data);
+			}
+		}
+	}
 
-    g_list_free(ids);
+	g_list_free(user_data);
 }
 
 static void
 mm_get_users_by_ids(MattermostAccount *ma, GList *ids)
 {
-    JsonObject *data = json_object_new();
-    JsonArray *user_ids = json_array_new();
-    GList *i;
-    gchar *url, *postdata;
+	JsonObject *data = json_object_new();
+	JsonArray *user_ids = json_array_new();
+	GList *i;
+	gchar *url, *postdata;
     
-    for (i = ids; i; i = i->next) {
-      json_array_add_string_element(user_ids, i->data);
-    }
-    // How to create a unnamed array in json-glib ??
-    json_object_set_array_member(data, "dont-want-name", user_ids);
- 
-    postdata = json_object_to_string(data);
+	for (i = ids; i; i = i->next) {
+		json_array_add_string_element(user_ids, i->data);
+	}
 
-    url = mm_build_url(ma, "/api/v3/users/ids");
+	// How to create unnamed array in json-glib ??
+	json_object_set_array_member(data, "dont-want-name", user_ids);
+	postdata = json_object_to_string(data);
+	url = mm_build_url(ma, "/api/v3/users/ids");
 
-    // g_strrstr -> hack to get unnamed array
-    mm_fetch_url(ma, url, g_strrstr(postdata,"["), mm_get_users_by_ids_response, ids);
+	// g_strrstr -> hack to get unnamed array
+	mm_fetch_url(ma, url, g_strrstr(postdata,"["), mm_get_users_by_ids_response, ids);
 
-    json_object_unref(data);
-    g_free(postdata);
-    g_free(url);       
+	json_object_unref(data);
+	g_free(postdata);
+	g_free(url);       
 }
 
 static void 
