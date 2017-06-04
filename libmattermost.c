@@ -986,7 +986,6 @@ mm_add_channels_to_blist(MattermostAccount *ma, JsonNode *node, gpointer user_da
 				} else {
 					user_id = buddy_names[0];
 				}
-
 				if (user_id != NULL) {
 					username = g_hash_table_lookup(ma->ids_to_usernames, user_id);
 					if (username != NULL) {
