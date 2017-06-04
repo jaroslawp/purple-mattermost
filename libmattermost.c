@@ -966,7 +966,7 @@ mm_add_channels_to_blist(MattermostAccount *ma, JsonNode *node, gpointer user_da
 	JsonArray *channels = json_node_get_array(node);
 	guint i, len = json_array_get_length(channels);
 	PurpleGroup *default_group = mm_get_or_create_default_group();
-    GList *ids = NULL;
+	GList *ids = NULL;
 			
 	for (i = 0; i < len; i++) {
 		JsonObject *channel = json_array_get_object_element(channels, i);
