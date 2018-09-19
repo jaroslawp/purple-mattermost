@@ -1,3 +1,11 @@
+## V4 API note:
+
+V4 API implementation is Work In Progress:
+in particular following does not work and/or is buggy:
+
+- chat history is limited to (first) 200 messages 
+- ...
+
 
 # Pidgin-Mattermost plugin by Eion Robb 
 
@@ -11,9 +19,16 @@ Connects libpurple-based instant messaging clients (such as Pidgin, Finch, Adium
 - Connect to Mattermost server using email/username & password. 
 - Connect to Mattermost server using AD/LDAP credentials. 
 - Connect to Mattermost server using GitLab cookie authentication (MMAUTHTOKEN workaround).
-- Automatically add buddies and joined channels to buddylist.
-- Unjoined channels displayed in Room List picker to be joined.
+- Automatically add buddies and joined channels to buddylist and keeps the list in sync with the server.
+- Automatically keeps chat topic in sync with the server.
+- Add/Remove buddies.
 - User search via **Accounts > {Mattermost Account} > Search for Users...**
+- Channel search via **Accounts > {Mattermost Account} > Room List**
+
+Not implemented yet:
+
+- Add/Remove chats.
+- ...
 
 **Core Communication**
  
